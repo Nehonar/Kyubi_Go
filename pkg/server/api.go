@@ -2,9 +2,8 @@ package server
 
 import (
 	"encoding/json"
+	gopher "kyubi_go/pkg"
 	"net/http"
-
-	"~/benito/kyubi_go/pkg/gopher"
 
 	"github.com/gorilla/mux"
 )
