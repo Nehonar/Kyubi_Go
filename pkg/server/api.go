@@ -4,11 +4,14 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"~/benito/kyubi_go/pkg/gopher"
+
 	"github.com/gorilla/mux"
 )
 
 type api struct {
-	router http.Handler
+	router     http.Handler
+	repository gopher.GopherRepository
 }
 
 type Server interface {
@@ -16,7 +19,6 @@ type Server interface {
 }
 
 func New() Server {
-
 	a := &api{}
 
 	r := mux.NewRouter()
@@ -40,11 +42,11 @@ func (a *api) fetchGophers(w http.ResponseWriter, r *http.Request) {
 
 func (a *api) fetchGopher(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	gopher, err := a.repository.fetchGopherByID(vars["ID"])
+	gopher, err := a.repository.FetchGopherByID(vars["ID"])
 	w.Header().Set("Content-Type", "application/json")
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound) // Use not found for simplicity
-		json.NewEncoder(w).Encode("Gopher Not Found")
+		w.WriteHeader(http.StatusNotFound) // We use not found for simplicity
+		json.NewEncoder(w).Encode("Gopher Not found")
 		return
 	}
 
